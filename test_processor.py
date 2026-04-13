@@ -13,8 +13,8 @@ class TestLibraryProcessor(unittest.TestCase):
     def test_invalid_book_rejected(self):
         borrow = pd.DataFrame({
             "book_id": [1, 999],  # invalid
-            "borrow_date": ["2024-01-01", "2024-01-01"],
-            "return_date": ["2024-01-02", "2024-01-02"]
+            "borrow_date": ["01-01-2024", "01-01-2024"],
+            "return_date": ["02-01-2024", "02-01-2024"]
         })
 
         p = LibraryProcessor(self.books, borrow)
@@ -26,7 +26,7 @@ class TestLibraryProcessor(unittest.TestCase):
         borrow = pd.DataFrame({
             "book_id": [1],
             "borrow_date": ["bad-date"],
-            "return_date": ["2024-01-02"]
+            "return_date": ["02-01-2024"]
         })
 
         p = LibraryProcessor(self.books, borrow)
@@ -37,8 +37,8 @@ class TestLibraryProcessor(unittest.TestCase):
     def test_no_fine_within_due_date(self):
         borrow = pd.DataFrame({
             "book_id": [1],
-            "borrow_date": ["2024-01-01"],
-            "return_date": ["2024-01-05"]  # 4 days
+            "borrow_date": ["01-01-2024"],
+            "return_date": ["05-01-2024"]  # 4 days
         })
 
         p = LibraryProcessor(self.books, borrow)
@@ -51,8 +51,8 @@ class TestLibraryProcessor(unittest.TestCase):
     def test_fine_calculation(self):
         borrow = pd.DataFrame({
             "book_id": [1],
-            "borrow_date": ["2024-01-01"],
-            "return_date": ["2024-01-10"]  # 9 days → 4 extra
+            "borrow_date": ["01-01-2024"],
+            "return_date": ["10-01-2024"]  # 9 days → 4 extra
         })
 
         p = LibraryProcessor(self.books, borrow)
@@ -64,8 +64,8 @@ class TestLibraryProcessor(unittest.TestCase):
     def test_late_return_flag(self):
         borrow = pd.DataFrame({
             "book_id": [1],
-            "borrow_date": ["2024-01-01"],
-            "return_date": ["2024-01-10"]
+            "borrow_date": ["01-01-2024"],
+            "return_date": ["10-01-2024"]
         })
 
         p = LibraryProcessor(self.books, borrow)

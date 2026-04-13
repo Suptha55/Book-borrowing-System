@@ -19,20 +19,19 @@ class LibraryProcessor:
             raise ValueError("books.csv must contain 'book_id'")
 
     def validate_records(self):
-        # Check valid book_ids
+        # Validate book_id
         valid_book_ids = set(self.books["book_id"])
-
         self.borrow = self.borrow[self.borrow["book_id"].isin(valid_book_ids)]
 
-        # Convert dates
+        # Date parsing (dayfirst=True)
         self.borrow["borrow_date"] = pd.to_datetime(
-            self.borrow["borrow_date"], errors="coerce"
+            self.borrow["borrow_date"], errors="coerce", dayfirst=True
         )
         self.borrow["return_date"] = pd.to_datetime(
-            self.borrow["return_date"], errors="coerce"
+            self.borrow["return_date"], errors="coerce", dayfirst=True
         )
 
-        # Drop invalid dates
+        # Remove invalid dates
         self.borrow = self.borrow.dropna(subset=["borrow_date", "return_date"])
 
     def calculate_fines(self):
@@ -49,10 +48,8 @@ class LibraryProcessor:
         self.borrow[["fine", "late_return"]] = self.borrow.apply(compute, axis=1)
 
     def generate_reports(self):
-        # Fine report
         fine_report = self.borrow.copy()
 
-        # Book usage summary
         summary = (
             self.borrow.groupby("book_id")
             .agg(
