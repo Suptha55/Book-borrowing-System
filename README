@@ -1,0 +1,87 @@
+LIBRARY BORROWING SYSTEM
+Overview:
+The Library Borrowing System is a Python-based application designed to manage book borrowings, calculate fines for late returns, send email notifications, and provide a web-based dashboard for monitoring records.
+The system processes input data from CSV files, validates records, computes fines based on borrowing duration, and generates reports. It also supports sending automated email notifications for late returns.
+
+Features:
+Record validation for books and borrow entries
+Fine calculation for late returns
+Automated email notifications for overdue fines
+Report generation (fine report and book usage summary)
+Web-based dashboard using Flask
+Unit testing for core modules
+
+Project Structure:
+bookborrowingsystem/
+│
+├── main.py
+├── processor.py
+├── notifier.py
+├── dashboard.py
+├── utils.py
+├── notification_config.py
+│
+├── test_processor.py
+├── test_notifier.py
+│
+├── books.csv
+├── borrow_records.csv
+│
+├── fine_report.csv
+├── book_usage_summary.csv
+├── notification_log.csv
+│
+└── templates/
+    └── index.html
+
+Installation:
+-Clone the repository:
+git clone <repository-url>
+cd bookborrowingsystem
+-Install dependencies:
+pip install pandas flask
+
+Configuration:
+Create or update notification_config.py with your email credentials:
+
+SMTP_HOST  = "smtp.gmail.com"
+SMTP_PORT  = 587
+SMTP_USER  = "your_email@gmail.com"
+SMTP_PASS  = "your_app_password"
+FROM_NAME  = "Library System"
+FROM_EMAIL = SMTP_USER
+
+Usage
+1. Generate Reports
+python main.py
+
+Outputs:
+fine_report.csv
+book_usage_summary.csv
+
+2. Send Fine Notifications
+python main.py --notify
+This sends emails only for late returns.
+
+3. Run Dashboard
+python main.py --dashboard
+
+Open in browser:
+http://127.0.0.1:5000
+
+Testing:
+
+Run unit tests:
+python test_processor.py
+python test_notifier.py
+
+Fine Calculation Logic:
+Allowed borrowing period: 5 days
+Fine is applied only if the book is returned after the allowed period
+Fine = (extra days) × (fine per day)
+Dashboard Features
+View all borrow records
+Filter by late/ontime status
+Search by user ID, book ID, or record ID
+Pagination support
+View book usage summary
